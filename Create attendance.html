@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | Attendance</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #172033;
+    }
+    header {
+      background: #172554;
+      color: white;
+      padding: 20px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    header h1 { margin: 0; }
+    nav { display: flex; gap: 12px; flex-wrap: wrap; }
+    nav a { color: white; text-decoration: none; }
+    main { max-width: 1050px; margin: 35px auto; padding: 0 20px; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      margin: 22px 0;
+    }
+    .stat, .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #1725540d;
+    }
+    .stat p { color: #64748b; margin-bottom: 8px; }
+    .stat strong { font-size: 28px; }
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    input, select, button {
+      padding: 11px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    input, select { background: white; }
+    button { cursor: pointer; background: #2563eb; color: white; border: 0; }
+    button:hover { opacity: .88; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 13px 10px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+    th { background: #f8fafc; }
+    .badge { padding: 5px 9px; border-radius: 20px; font-size: 12px; }
+    .present { background: #dcfce7; color: #166534; }
+    .absent { background: #fee2e2; color: #991b1b; }
+    .table-wrap { overflow-x: auto; }
+    footer { text-align: center; padding: 25px; color: #64748b; }
+    @media(max-width: 600px) {
+      header { padding: 20px; }
+      th, td { padding: 10px 7px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📊 Attendance Register</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="homepage.html">Dashboard</a>
+      <a href="attendance.html">Attendance</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Student Attendance</h2>
+    <p>Demo data is stored in this browser only.</p>
+
+    <section class="stats">
+      <div class="stat"><p>Total Students</p><strong id="total">0</strong></div>
+      <div class="stat"><p>Present</p><strong id="present">0</strong></div>
+      <div class="stat"><p>Absent</p><strong id="absent">0</strong></div>
+    </section>
+
+    <section class="panel">
+      <div class="controls">
+        <input id="search" placeholder="Search student..." aria-label="Search student">
+        <select id="filter" aria-label="Filter attendance">
+          <option value="all">All statuses</option>
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+        </select>
+        <button id="add">+ Add Student</button>
+        <button id="export">Export CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Student ID</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>Student Dashboard · Attendance Demo</footer>
+
+  <script>
+    const defaultStudents = [
+      { name: "Aarav Sharma", id: "STU001", status: "Present" },
+      { name: "Diya Patel", id: "STU002", status: "Present" },
+      { name: "Rohan Kumar", id: "STU003", status: "Absent" },
+      { name: "Ananya Rao", id: "STU004", status: "Present" }
+    ];
+
+    let students;
+    try {
+      students = JSON.parse(localStorage.getItem("studentAttendance")) || defaultStudents;
+      if (!Array.isArray(students)) students = defaultStudents;
+    } catch {
+      students = defaultStudents;
+    }
+
+    const rows = document.getElementById("rows");
+
+    function render() {
+      const query = document.getElementById("search").value.toLowerCase();
+      const filter = document.getElementById("filter").value;
+      rows.replaceChildren();
+
+      students.filter(s =>
+        (s.name.toLowerCase().includes(query) || s.id.toLowerCase().includes(query)) &&
+        (filter === "all" || s.status === filter)
+      ).forEach(student => {
+        const tr = document.createElement("tr");
+
+        const name = document.createElement("td");
+        name.textContent = student.name;
+        tr.appendChild(name);
+
+        const id = document.createElement("td");
+        id.textContent = student.id;
+        tr.appendChild(id);
+
+        const status = document.createElement("td");
+        const badge = document.createElement("span");
+        badge.className = "badge " + student.status.toLowerCase();
+        badge.textContent = student.status;
+        status.appendChild(badge);
+        tr.appendChild(status);
+
+        const action = document.createElement("td");
+        const button = document.createElement("button");
+        button.textContent = "Toggle status";
+        button.addEventListener("click", () => {
+          student.status = student.status === "Present" ? "Absent" : "Present";
+          save();
+        });
+        action.appendChild(button);
+        tr.appendChild(action);
+
+        rows.appendChild(tr);
+      });
+
+      document.getElementById("total").textContent = students.length;
+      document.getElementById("present").textContent =
+        students.filter(s => s.status === "Present").length;
+      document.getElementById("absent").textContent =
+        students.filter(s => s.status === "Absent").length;
+    }
+
+    function save() {
+      localStorage.setItem("studentAttendance", JSON.stringify(students));
+      render();
+    }
+
+    document.getElementById("search").addEventListener("input", render);
+    document.getElementById("filter").addEventListener("change", render);
+
+    document.getElementById("add").addEventListener("click", () => {
+      const name = prompt("Enter student name:");
+      if (!name || !name.trim()) return;
+      const id = prompt("Enter student ID:");
+      if (!id || !id.trim()) return;
+      if (students.some(s => s.id.toLowerCase() === id.trim().toLowerCase())) {
+        alert("That student ID already exists.");
+        return;
+      }
+      students.push({ name: name.trim(), id: id.trim(), status: "Present" });
+      save();
+    });
+
+    document.getElementById("export").addEventListener("click", () => {
+      const csv = [
+        ["Name", "Student ID", "Status"],
+        ...students.map(s => [s.name, s.id, s.status])
+      ].map(row => row.map(value =>
+        '"' + String(value).replace(/"/g, '""') + '"'
+      ).join(",")).join("\r\n");
+
+      const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "attendance.csv";
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    render();
+  </script>
+</body>
+</html>
