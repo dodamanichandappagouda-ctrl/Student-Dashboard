@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #172033;
+    }
+    header {
+      background: #172554;
+      color: white;
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    header h1 { margin: 0; font-size: 24px; }
+    nav { display: flex; gap: 10px; flex-wrap: wrap; }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 13px;
+      border-radius: 8px;
+      background: #ffffff1a;
+    }
+    .hero {
+      text-align: center;
+      padding: 75px 20px;
+      background: linear-gradient(135deg, #dbeafe, #eef2ff);
+    }
+    .hero h2 { font-size: clamp(30px, 5vw, 48px); }
+    .hero p {
+      max-width: 620px;
+      margin: 0 auto 25px;
+      line-height: 1.7;
+      color: #475569;
+    }
+    .button {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      padding: 13px 20px;
+      border-radius: 9px;
+      text-decoration: none;
+      margin: 5px;
+    }
+    main { max-width: 1050px; margin: 35px auto; padding: 0 20px; }
+    main > h2 { text-align: center; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #1725540d;
+    }
+    .card p { color: #64748b; line-height: 1.6; }
+    .card a { color: #2563eb; font-weight: bold; text-decoration: none; }
+    footer { text-align: center; padding: 25px; color: #64748b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎓 Student Dashboard</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="homepage.html">Dashboard</a>
+      <a href="attendance.html">Attendance</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Your College Life, Organized.</h2>
+    <p>Access student tools, manage attendance records, and find college support from one simple dashboard.</p>
+    <a class="button" href="homepage.html">Open Dashboard</a>
+    <a class="button" href="attendance.html">View Attendance</a>
+  </section>
+
+  <main>
+    <h2>Explore Your Dashboard</h2>
+    <section class="grid">
+      <article class="card">
+        <h3>📊 Attendance</h3>
+        <p>View and manage student attendance records.</p>
+        <a href="attendance.html">Open attendance →</a>
+      </article>
+      <article class="card">
+        <h3>📚 Student Dashboard</h3>
+        <p>Explore your student homepage and college tools.</p>
+        <a href="homepage.html">Explore dashboard →</a>
+      </article>
+      <article class="card">
+        <h3>✉️ Contact</h3>
+        <p>Find contact information and send a message.</p>
+        <a href="contact.html">Contact us →</a>
+      </article>
+    </section>
+  </main>
+
+  <footer>Student Dashboard · College Project</footer>
+</body>
+</html>
