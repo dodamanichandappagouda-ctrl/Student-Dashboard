@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | Contact</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #172033;
+    }
+    header {
+      background: #172554;
+      color: white;
+      padding: 20px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    header h1 { margin: 0; font-size: 24px; }
+    nav { display: flex; gap: 12px; flex-wrap: wrap; }
+    nav a { color: white; text-decoration: none; }
+    main { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    .panel {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px #1725540d;
+    }
+    label { display: block; margin: 16px 0 7px; font-weight: bold; }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font: inherit;
+    }
+    textarea { min-height: 130px; resize: vertical; }
+    button {
+      margin-top: 18px;
+      background: #2563eb;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      padding: 13px 20px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .note { color: #64748b; line-height: 1.6; }
+    footer { text-align: center; padding: 25px; color: #64748b; }
+    @media(max-width: 600px) {
+      header { padding: 20px; }
+      .panel { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✉️ Contact Us</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="homepage.html">Dashboard</a>
+      <a href="attendance.html">Attendance</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>We're here to help</h2>
+      <p class="note">
+        Have a question about the Student Dashboard? Fill in the form below.
+        This demo opens your email application to send the message.
+      </p>
+
+      <form id="contactForm">
+        <label for="name">Your name</label>
+        <input id="name" name="name" autocomplete="name" required>
+
+        <label for="email">Your email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+
+        <label for="subject">Subject</label>
+        <input id="subject" name="subject" required>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button type="submit">Prepare Email</button>
+      </form>
+      <p id="notice" class="note" role="status"></p>
+    </section>
+  </main>
+
+  <footer>Student Dashboard · College Project</footer>
+
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const subject = document.getElementById("subject").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+      const mailto = "mailto:?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+
+      document.getElementById("notice").textContent =
+        "Your email application should open. Choose a recipient before sending.";
+      window.location.href = mailto;
+    });
+  </script>
+</body>
+</html>
